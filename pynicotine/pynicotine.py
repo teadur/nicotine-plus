@@ -627,8 +627,6 @@ class NetworkEventProcessor:
         self.serverconn = msg.conn
         self.servertimeout = -1
         self.users = {}
-        if self.waitport is not None:
-            self.queue.put(slskmessages.SetWaitPort(self.waitport))
         self.queue.put(
             slskmessages.Login(
                 self.config.sections["server"]["login"],
