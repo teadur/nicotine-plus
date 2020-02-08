@@ -11,10 +11,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import textwrap
 import time
-from sys import stdout, platform
+from sys import stdout
 
 from collections import deque
 

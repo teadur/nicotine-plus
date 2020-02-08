@@ -26,11 +26,9 @@
 from pynicotine.pynicotine import NetworkEventProcessor
 from pynicotine import slskmessages
 from pynicotine import slskproto
-from pynicotine.utils import version, debug
+from pynicotine.utils import version
 
 import gi
-
-from ..slskmessages import InternalData
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')

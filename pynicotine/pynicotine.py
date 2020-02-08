@@ -29,6 +29,7 @@
 This is the actual client code. Actual GUI classes are in the separate modules
 """
 
+
 import datetime
 import shutil
 from urllib.parse import urlencode
@@ -41,7 +42,7 @@ import threading
 from .config import *
 import locale
 from .shares import Shares
-from .utils import CleanFile, findBestEncoding, debug
+from .utils import CleanFile, findBestEncoding
 import os
 import logging
 
@@ -110,8 +111,8 @@ class NetworkEventProcessor:
             short = _("Your config file is corrupt")
             long = _("We're sorry, but it seems your configuration file is corrupt. Please reconfigure Nicotine+.\n\nWe renamed your old configuration file to\n%(corrupt)s\nIf you open this file with a text editor you might be able to rescue some of your settings.") % {'corrupt': corruptfile}
             log.addwarning(int)
-            self.config = Config(config, data_dir)
-            self.callback([PopupMessage(short, long)])
+            self.config = Config(configfile)
+            self.callback([PopupMessage(short, int)])
 
         self.bindip = bindip
         self.port = port

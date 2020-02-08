@@ -29,15 +29,16 @@
 This module contains configuration classes for Nicotine.
 """
 
-import _thread
+from . import ConfigParser
 import os
+import time
 import pickle
 import shelve
 import sys
-import time
+import _thread
+
 from os.path import exists
 
-from . import ConfigParser
 from .logfacility import log
 
 

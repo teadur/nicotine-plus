@@ -33,7 +33,6 @@ import sys
 import locale
 import gettext
 
-
 version = "1.5.0"
 
 log = 0

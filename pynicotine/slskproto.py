@@ -23,6 +23,7 @@
 This module implements SoulSeek networking protocol.
 """
 
+
 from math import floor
 
 from .slskmessages import *
@@ -411,7 +412,6 @@ class SlskProtoThread(threading.Thread):
 				if sys.platform == "win32":
 					input, output, exc = multiselect(list(conns.keys()) + list(connsinprogress.keys())+ [p], list(connsinprogress.keys()) + outsock, [], 0.5)
 				else:
-					debug('select.select', len(list(conns.keys()) + list(connsinprogress.keys()) +[p]), len(list(connsinprogress.keys()) + outsock))
 					input, output, exc = select.select(list(conns.keys()) + list(connsinprogress.keys()) +[p], list(connsinprogress.keys()) + outsock, [], 0.5)
 				numsockets = 0
 				if p is not None:
@@ -946,7 +946,6 @@ class SlskProtoThread(threading.Thread):
 						queue.put(msgObj)
 						needsleep = True
 				except Exception as error:
-					print(_("Error packaging message: %(type)s %(msg_obj)s, %(error)s") %{'type':msgObj.__class__, 'msg_obj':vars(msgObj), 'error': str(error)})
 					self._ui_callback([_("Error packaging message: %(type)s %(msg_obj)s, %(error)s") %{'type':msgObj.__class__, 'msg_obj':vars(msgObj), 'error': str(error)}])
 			elif issubclass(msgObj.__class__, PeerMessage):
 				if msgObj.conn in conns:
