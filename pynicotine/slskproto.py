@@ -104,7 +104,7 @@ class ServerConnection(Connection):
 
 
 class PeerConnection(Connection):
-	def __init__(self, conn=None, addr=None, ibuf=b"", obuf=b"", init=None):
+	def __init__(self, conn = None, addr = None, ibuf = b"", obuf = b"", init = None):
 		Connection.__init__(self, conn, addr, ibuf, obuf)
 		self.filereq = None
 		self.filedown = None

@@ -31,7 +31,6 @@ gi.require_version('Gdk', '3.0')
 
 from gi.repository import Gtk as gtk
 from gi.repository import Gdk
-from gi.repository import GObject as gobject
 from gi.repository import Pango as pango
 import time
 import locale
@@ -40,7 +39,6 @@ import sys
 import string
 import re
 import types
-import urllib.request, urllib.parse, urllib.error
 import webbrowser
 
 from pynicotine import slskmessages
