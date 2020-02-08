@@ -126,7 +126,7 @@ def version():
 
 
 def usage():
-    print(_("""Nicotine+ is a Soulseek client.
+    print((_("""Nicotine+ is a Soulseek client.
 Usage: nicotine [OPTION]...
   -c file, --config=file      Use non-default configuration file
   -p dir,  --plugins=dir      Use non-default directory for plugins
@@ -136,7 +136,7 @@ Usage: nicotine [OPTION]...
   -s,      --hidden           Start the program hidden so only the tray icon is shown
   -b ip,   --bindip=ip        Bind sockets to the given IP (useful for VPN)
   -l port, --port=port        Listen on the given port. Overrides the portrange configuration
-  -v,      --version          Display version and exit"""))
+  -v,      --version          Display version and exit""")))
 
 
 def renameprocess(newname, debug=False):
