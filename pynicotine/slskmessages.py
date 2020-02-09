@@ -29,6 +29,7 @@ from typing import Union
 from .utils import *
 from .logfacility import log
 from itertools import count
+from tools.debug import debug
 
 """ This module contains message classes, that networking and UI thread
 exchange. Basically there are three types of messages: internal messages,

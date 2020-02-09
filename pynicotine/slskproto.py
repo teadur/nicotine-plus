@@ -39,6 +39,7 @@ import struct
 from errno import EINTR
 from .utils import win32, debug
 from .logfacility import log
+from tools.debug import debug
 
 MAXFILELIMIT = -1
 if win32:
@@ -104,7 +105,7 @@ class ServerConnection(Connection):
 
 
 class PeerConnection(Connection):
-	def __init__(self, conn = None, addr = None, ibuf = b"", obuf = b"", init = None):
+	def __init__(self, conn=None, addr=None, ibuf=b"", obuf=b"", init=None):
 		Connection.__init__(self, conn, addr, ibuf, obuf)
 		self.filereq = None
 		self.filedown = None
@@ -946,6 +947,7 @@ class SlskProtoThread(threading.Thread):
 						queue.put(msgObj)
 						needsleep = True
 				except Exception as error:
+					print(_("Error packaging message: %(type)s %(msg_obj)s, %(error)s") %{'type':msgObj.__class__, 'msg_obj':vars(msgObj), 'error': str(error)})
 					self._ui_callback([_("Error packaging message: %(type)s %(msg_obj)s, %(error)s") %{'type':msgObj.__class__, 'msg_obj':vars(msgObj), 'error': str(error)}])
 			elif issubclass(msgObj.__class__, PeerMessage):
 				if msgObj.conn in conns:
@@ -986,6 +988,7 @@ class SlskProtoThread(threading.Thread):
 						message = _("Can't send the message over the closed connection: %(type)s %(msg_obj)s") %{'type':msgObj.__class__, 'msg_obj':vars(msgObj)}
 						log.add(message, 3)
 			elif issubclass(msgObj.__class__, InternalMessage):
+				debug(f"Internal msg: {msgObj}")
 				socketwarning = False
 				if msgObj.__class__ is ServerConn:
 					if maxsockets == -1 or numsockets < maxsockets:
