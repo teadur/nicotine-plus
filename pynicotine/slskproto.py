@@ -39,7 +39,6 @@ import struct
 from errno import EINTR
 from .utils import win32, debug
 from .logfacility import log
-from tools.debug import debug
 
 MAXFILELIMIT = -1
 if win32:
