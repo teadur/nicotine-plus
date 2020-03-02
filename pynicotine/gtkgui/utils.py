@@ -32,6 +32,7 @@ gi.require_version('Gdk', '3.0')
 from gi.repository import Gtk as gtk
 from gi.repository import Gdk
 from gi.repository import Pango as pango
+from gi.repository import GObject as gobject
 import time
 import locale
 import os

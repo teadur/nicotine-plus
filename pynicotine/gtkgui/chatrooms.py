@@ -427,7 +427,7 @@ class RoomsControl:
         self.rooms = []
         for room, users in msg.rooms:
             debug('room', room, 'users', users)
-            self.roomsmodel.append([room.decode('utf-8'), users, 0])
+            self.roomsmodel.append([room, users, 0])
             self.rooms.append(room)
 
         self.SetPrivateRooms(msg.ownedprivaterooms, msg.otherprivaterooms)
@@ -783,8 +783,6 @@ class Ticker:
         if self.ix >= len(self.sortedmessages):
             self.ix = 0
 
-        debug('sortedmessages', self.sortedmessages)
-        debug('ix', self.ix)
         (user, message) = self.sortedmessages[self.ix]
         self.entry.set_text("[%s]: %s" % (user, message))
         self.ix += 1
@@ -1803,7 +1801,7 @@ class ChatRoom:
                     break
                 iter = self.roomsctrl.roomsmodel.iter_next(iter)
         else:
-            self.roomsctrl.roomsmodel.append([self.room.decode('utf-8'), numusers, 0])
+            self.roomsctrl.roomsmodel.append([self.room, numusers, 0])
             self.roomsctrl.rooms.append(self.room)
 
     def UserColumnDraw(self, column, cellrenderer, model, iter, dummy="dummy"):
