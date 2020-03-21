@@ -114,7 +114,7 @@ def ApplyTranslation():
 
     If no translations are found we fall back to the system path for locates:
     GNU/Linux: /usr/share/locale/$(LANG)/LC_MESSAGES
-    Windows: %PYTHONHOME%\share\locale\$(LANG)\LC_MESSAGES
+    Windows: %PYTHONHOME%\\share\\locale\\$(LANG)\\LC_MESSAGES
 
     Note: To the best of my knowledge when we are in a python venv
     falling back to the system path does not work."""
@@ -294,7 +294,7 @@ def executeCommand(command, replacement=None, background=True, returnoutput=Fals
     goes wrong while executing the command.
 
     Example commands:
-    * "C:\Program Files\WinAmp\WinAmp.exe" --xforce "--title=My Window Title"
+    * "C:\\Program Files\\WinAmp\\WinAmp.exe" --xforce "--title=My Window Title"
     * mplayer $
     * echo $ | flite -t """
 

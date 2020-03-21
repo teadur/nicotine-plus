@@ -1219,7 +1219,7 @@ class ChatRoom:
 
                 timestamp_format = self.frame.np.config.sections["logging"]["rooms_timestamp"]
 
-                line = re.sub("\s\s+", "  ", line)
+                line = re.sub(r"\\s\\s+", "  ", line)
                 line += "\n"
 
                 if user != config["server"]["login"]:
@@ -1401,7 +1401,7 @@ class ChatRoom:
         self.Ticker.remove_ticker(msg.user)
 
     def SayChatRoom(self, msg, text, public=False):
-        text = re.sub("\s\s+", "  ", text)
+        text = re.sub("\\s\\s+", "  ", text)
         login = self.frame.np.config.sections["server"]["login"]
         user = msg.user
 
@@ -1719,7 +1719,7 @@ class ChatRoom:
         gobject.idle_add(self.frame.ScrollBottom, self.ChatScroll.get_parent())
 
     def Say(self, text):
-        text = re.sub("\s\s+", "  ", text)
+        text = re.sub("\\s\\s+", "  ", text)
         tobeencoded = ToBeEncoded(text, self.encoding)
         self.frame.np.queue.put(slskmessages.SayChatroom(self.room, tobeencoded))
 

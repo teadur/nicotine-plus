@@ -154,7 +154,7 @@ class Config:
                     ["folder.jpg", 1],
                     ["*.url", 1],
                     ["thumbs.db", 1],
-                    ["albumart(_{........-....-....-....-............}_)?(_?(large|small))?\.jpg", 0]
+                    ["albumart(_{........-....-....-....-............}_)?(_?(large|small))?\\.jpg", 0]
                 ],
                 "download_doubleclick": 1,
                 "upload_doubleclick": 1,

@@ -705,9 +705,9 @@ class NowPlaying:
         for wnd_id in wnd_ids:
             wnd_txt = GetWindowText(FindWindow(wnd_id, None))
             if wnd_txt:
-                m = re.match("(.*)\s+\[foobar.*", wnd_txt)
+                m = re.match(r"(.*)\\s+\[foobar.*", wnd_txt)
                 if m:
-                    metadata = m.groups(0)[0].strip()
+                    metadata = m.groups()[0].strip()
 
         if metadata:
             self.title["nowplaying"] = "now playing: " + metadata.decode('mbcs')

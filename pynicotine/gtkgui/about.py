@@ -317,7 +317,7 @@ Wretched
 - Beta tester
 - Bringer of great ideas
 
-(va)\*10^3
+(va)\\*10^3
 - Beta tester
 - Designer of the old nicotine homepage and artwork (logos)
 

@@ -2516,7 +2516,7 @@ class NicotineFrame:
             filter, escaped = item
             if escaped:
                 dfilter = re.escape(filter)
-                dfilter = dfilter.replace("\*", ".*")
+                dfilter = dfilter.replace("\\*", ".*")
             else:
                 dfilter = filter
             try:

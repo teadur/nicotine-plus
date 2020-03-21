@@ -346,7 +346,7 @@ class DownloadsFrame(buildFrame):
 
         if win32:
             place = "Windows"
-            homedir = "C:\windows"
+            homedir = "C:\\windows"
         else:
             place = "Home"
             homedir = pwd.getpwuid(os.getuid())[5]
@@ -521,7 +521,7 @@ class DownloadsFrame(buildFrame):
             ["folder.jpg", 1],
             ["*.url", 1],
             ["thumbs.db", 1],
-            ["albumart(_{........-....-....-....-............}_)?(_?(large|small))?\.jpg", 0]
+            ["albumart(_{........-....-....-....-............}_)?(_?(large|small))?\\.jpg", 0]
         ]
 
         for dfilter in default_filters:
@@ -548,7 +548,7 @@ class DownloadsFrame(buildFrame):
 
             if escaped:
                 dfilter = re.escape(dfilter)
-                dfilter = dfilter.replace("\*", ".*")
+                dfilter = dfilter.replace("\\*", ".*")
 
             try:
                 re.compile("(" + dfilter + ")")
@@ -706,7 +706,7 @@ class SharesFrame(buildFrame):
 
         if win32:
             place = "Windows"
-            homedir = "C:\windows"
+            homedir = "C:\\windows"
         else:
             place = "Home"
             homedir = pwd.getpwuid(os.getuid())[5]
@@ -2599,7 +2599,7 @@ class UrlCatchFrame(buildFrame):
             "links -g $",
             "dillo $",
             "konqueror $",
-            "\"c:\Program Files\Mozilla Firefox\Firefox.exe\" $"
+            "\"c:\\Program Files\\Mozilla Firefox\\Firefox.exe\" $"
         ]:
             self.handlermodel.append([item])
 
