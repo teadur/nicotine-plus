@@ -22,51 +22,70 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-from pynicotine.pynicotine import NetworkEventProcessor
-from pynicotine import slskmessages
-from pynicotine import slskproto
-from pynicotine.utils import version, debug
+import os
+import re
+import signal
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+from gettext import gettext as _
 
 import gi
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from gi.repository import GObject as gobject
+from gi.repository import Gtk as gtk
 
-from ..slskmessages import InternalData
+import _thread
+import pynicotine.utils
+from pynicotine import pluginsystem
+from pynicotine import slskmessages
+from pynicotine import slskproto
+from pynicotine.gtkgui import imagedata
+from pynicotine.gtkgui import nowplaying
+from pynicotine.gtkgui import utils
+from pynicotine.gtkgui.about import AboutDependenciesDialog
+from pynicotine.gtkgui.about import AboutDialog
+from pynicotine.gtkgui.about import AboutFiltersDialog
+from pynicotine.gtkgui.about import AboutPrivateDialog
+from pynicotine.gtkgui.about import AboutRoomsDialog
+from pynicotine.gtkgui.chatrooms import ChatRooms
+from pynicotine.gtkgui.checklatest import checklatest
+from pynicotine.gtkgui.dirchooser import ChooseFile
+from pynicotine.gtkgui.dirchooser import SaveFile
+from pynicotine.gtkgui.downloads import Downloads
+from pynicotine.gtkgui.entrydialog import FindDialog
+from pynicotine.gtkgui.entrydialog import FolderDownload
+from pynicotine.gtkgui.entrydialog import QuitBox
+from pynicotine.gtkgui.entrydialog import input_box
+from pynicotine.gtkgui.fastconfigure import FastConfigureAssistant
+from pynicotine.gtkgui.privatechat import PrivateChats
+from pynicotine.gtkgui.search import Searches
+from pynicotine.gtkgui.settingswindow import SettingsWindow
+from pynicotine.gtkgui.uploads import Uploads
+from pynicotine.gtkgui.userbrowse import UserBrowse
+from pynicotine.gtkgui.userinfo import UserInfo
+from pynicotine.gtkgui.userinfo import UserTabs
+from pynicotine.gtkgui.userlist import UserList
+from pynicotine.gtkgui.utils import AppendLine
+from pynicotine.gtkgui.utils import Humanize
+from pynicotine.gtkgui.utils import HumanSpeed
+from pynicotine.gtkgui.utils import ImageLabel
+from pynicotine.gtkgui.utils import OpenUri
+from pynicotine.gtkgui.utils import PopupMenu
+from pynicotine.gtkgui.utils import ScrollBottom
+from pynicotine.gtkgui.utils import popupWarning
+from pynicotine.logfacility import log
+from pynicotine.pynicotine import NetworkEventProcessor
+from pynicotine.upnp import UPnPPortMapping
+from pynicotine.utils import executeCommand
+from pynicotine.utils import version
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 
-from gi.repository import GObject as gobject
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-
-import _thread
-import urllib.request, urllib.parse, urllib.error
-import signal
-import re
-from . import imagedata
-from .privatechat import PrivateChats
-from .chatrooms import ChatRooms
-from .userinfo import UserTabs, UserInfo
-from .search import Searches
-from .downloads import Downloads
-from .uploads import Uploads
-from .userlist import UserList
-from .userbrowse import UserBrowse
-from .settingswindow import SettingsWindow
-from .fastconfigure import FastConfigureAssistant
-from .about import *
-from .checklatest import checklatest
-from pynicotine.config import *
-from . import utils
-import pynicotine.utils
-from .utils import AppendLine, ImageLabel, IconNotebook, ScrollBottom, PopupMenu, Humanize, HumanSpeed, HumanSize, popupWarning, OpenUri
-from .dirchooser import ChooseFile, SaveFile
-from pynicotine.utils import executeCommand
-from . import nowplaying
-from pynicotine import pluginsystem
-from pynicotine.logfacility import log
-from .entrydialog import FindDialog, input_box, FolderDownload, QuitBox
-from pynicotine.upnp import UPnPPortMapping
 
 # LibSexy is deprecated, we should try to find a replacement
 SEXY = True
@@ -229,14 +248,14 @@ class NicotineFrame:
             self.pynotify = None
 
         self.np = NetworkEventProcessor(
-          self,
-          self.callback,
-          self.logMessage,
-          self.SetStatusText,
-          self.bindip,
-          self.port,
-          data_dir,
-          config
+            self,
+            self.callback,
+            self.logMessage,
+            self.SetStatusText,
+            self.bindip,
+            self.port,
+            data_dir,
+            config
         )
 
         config = self.np.config.sections
@@ -402,32 +421,32 @@ class NicotineFrame:
             self.UserBrowseTabLabel,
             self.InterestsTabLabel
         ]:
-                # Initialize the image label
-                img_label = ImageLabel(translated_tablabels[label_tab], self.images["empty"])
-                img_label.show()
+            # Initialize the image label
+            img_label = ImageLabel(translated_tablabels[label_tab], self.images["empty"])
+            img_label.show()
 
-                # Add it to the eventbox
-                label_tab.add(img_label)
+            # Add it to the eventbox
+            label_tab.add(img_label)
 
-                # Set tab icons, angle and text color
-                img_label.show_image(config["ui"]["tab_icons"])
-                img_label.set_angle(config["ui"]["labelmain"])
-                img_label.set_text_color(0)
+            # Set tab icons, angle and text color
+            img_label.show_image(config["ui"]["tab_icons"])
+            img_label.set_angle(config["ui"]["labelmain"])
+            img_label.set_text_color(0)
 
-                # Set the menu to hide the tab
-                eventbox_name = gtk.Buildable.get_name(label_tab)
+            # Set the menu to hide the tab
+            eventbox_name = gtk.Buildable.get_name(label_tab)
 
-                label_tab.connect('button_press_event', self.on_tab_click, eventbox_name + "Menu", map_tablabels_to_box[label_tab])
+            label_tab.connect('button_press_event', self.on_tab_click, eventbox_name + "Menu", map_tablabels_to_box[label_tab])
 
-                self.__dict__[eventbox_name + "Menu"] = popup = utils.PopupMenu(self)
+            self.__dict__[eventbox_name + "Menu"] = popup = utils.PopupMenu(self)
 
-                popup.setup(
-                    (
-                        "#" + _("Hide %(tab)s") % {"tab": translated_tablabels[label_tab]}, self.HideTab, [label_tab, map_tablabels_to_box[label_tab]]
-                    )
+            popup.setup(
+                (
+                    "#" + _("Hide %(tab)s") % {"tab": translated_tablabels[label_tab]}, self.HideTab, [label_tab, map_tablabels_to_box[label_tab]]
                 )
+            )
 
-                popup.set_user(map_tablabels_to_box[label_tab])
+            popup.set_user(map_tablabels_to_box[label_tab])
 
         self.LogScrolledWindow = gtk.ScrolledWindow()
         self.LogScrolledWindow.set_shadow_type(gtk.ShadowType.IN)
@@ -756,10 +775,10 @@ class NicotineFrame:
             self.pynotifyBox.set_icon_from_pixbuf(self.images["notify"])
             try:
                 n.attach_to_status_icon(self.TrayApp.trayicon)
-            except:
+            except Exception:
                 try:
                     n.attach_to_widget(self.TrayApp.trayicon)
-                except:
+                except Exception:
                     pass
         else:
             self.pynotifyBox.update(title, xmlmessage)
@@ -902,7 +921,7 @@ class NicotineFrame:
 
         cols = utils.InitialiseColumns(
             self.DislikesList,
-            [_("I dislike")+":", 0, "text", self.CellDataFunc]
+            [_("I dislike") + ":", 0, "text", self.CellDataFunc]
         )
 
         cols[0].set_sort_column_id(0)
@@ -976,7 +995,7 @@ class NicotineFrame:
         self.RecommendationsExpander.connect("activate", self.RecommendationsExpanderStatus)
         self.UnrecommendationsExpander.connect("activate", self.RecommendationsExpanderStatus)
 
-        statusiconwidth = self.images["offline"].get_width()+4
+        statusiconwidth = self.images["offline"].get_width() + 4
 
         cols = utils.InitialiseColumns(
             self.RecommendationUsersList,
@@ -1327,7 +1346,7 @@ class NicotineFrame:
             gobject.source_remove(self.awaytimer)
             autoaway = self.np.config.sections["server"]["autoaway"]
             if autoaway > 0:
-                self.awaytimer = gobject.timeout_add(1000*60*autoaway, self.OnAutoAway)
+                self.awaytimer = gobject.timeout_add(1000 * 60 * autoaway, self.OnAutoAway)
             else:
                 self.awaytimer = None
 
@@ -1337,7 +1356,7 @@ class NicotineFrame:
             return False
         for i in range(1, 10):
             if event.keyval == Gdk.keyval_from_name(str(i)):
-                self.MainNotebook.set_current_page(i-1)
+                self.MainNotebook.set_current_page(i - 1)
                 widget.emit_stop_by_name("key_press_event")
                 return True
         return False
@@ -1380,7 +1399,7 @@ class NicotineFrame:
                 msgs.remove(i)
             if i.__class__ is slskmessages.ConnClose:
                 msgs = self.postTransferMsgs(msgs, curtime)
-        if curtime-self.transfermsgspostedtime > 1.0:
+        if curtime - self.transfermsgspostedtime > 1.0:
             msgs = self.postTransferMsgs(msgs, curtime)
         if len(msgs) > 0:
             gobject.idle_add(self.emit_network_event, msgs[:])
@@ -1389,7 +1408,7 @@ class NicotineFrame:
         trmsgs = []
         for (key, value) in self.transfermsgs.items():
             trmsgs.append(value)
-        msgs = trmsgs+msgs
+        msgs = trmsgs + msgs
         self.transfermsgs = {}
         self.transfermsgspostedtime = curtime
         return msgs
@@ -1721,7 +1740,7 @@ class NicotineFrame:
             autoaway = self.np.config.sections["server"]["autoaway"]
 
             if autoaway > 0:
-                self.awaytimer = gobject.timeout_add(1000*60*autoaway, self.OnAutoAway)
+                self.awaytimer = gobject.timeout_add(1000 * 60 * autoaway, self.OnAutoAway)
             else:
                 self.awaytimer = None
         else:
@@ -1799,7 +1818,7 @@ class NicotineFrame:
 
     def OnAway(self, widget):
 
-        self.away = (self.away+1) % 2
+        self.away = (self.away + 1) % 2
 
         if self.away == 0:
             self.SetUserStatus(_("Online"))
@@ -1842,7 +1861,7 @@ class NicotineFrame:
                 return
 
         tablabel.set_image(status == 1 and self.images["hilite"] or self.images["hilite3"])
-        tablabel.set_text_color(status+1)
+        tablabel.set_text_color(status + 1)
 
     def GetTabLabel(self, TabLabel):
 
@@ -2311,7 +2330,7 @@ class NicotineFrame:
         try:
             for tab in self.MainNotebook.get_children():
                 self.MainNotebook.set_tab_reorderable(tab, config["ui"]["tab_reorderable"])
-        except:
+        except Exception:
             # Old gtk
             pass
 
@@ -2501,7 +2520,7 @@ class NicotineFrame:
             else:
                 dfilter = filter
             try:
-                re.compile("("+dfilter+")")
+                re.compile("(" + dfilter + ")")
                 outfilter += dfilter
                 proccessedfilters.append(dfilter)
             except Exception as e:
@@ -2756,7 +2775,7 @@ class NicotineFrame:
                 self.np.ProcessRequestToPeer(user, slskmessages.FolderContentsRequest(None, file[:-1].replace("/", "\\")))
             else:
                 self.np.transfers.getFile(user, file.replace("/", "\\"), "")
-        except:
+        except Exception:
             self.logMessage(_("Invalid SoulSeek meta-url: %s") % url)
 
     def SetClipboardURL(self, user, path):
@@ -2787,7 +2806,7 @@ class NicotineFrame:
                 else:
                     has_pic = False
                     pic = None
-            except:
+            except Exception:
                 pic = None
 
             descr = self.np.encode(eval(self.np.config.sections["userinfo"]["descr"], {}))

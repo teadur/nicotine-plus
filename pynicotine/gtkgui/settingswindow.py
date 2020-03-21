@@ -23,22 +23,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+import re
+import sys
+from gettext import gettext as _
+
 import gi
+from gi.repository import Gdk
+from gi.repository import Gio as gio
+from gi.repository import GObject as gobject
+from gi.repository import Gtk as gtk
+
+import _thread
+from pynicotine.gtkgui.dirchooser import ChooseDir
+from pynicotine.gtkgui.entrydialog import input_box
+from pynicotine.gtkgui.utils import Humanize
+from pynicotine.gtkgui.utils import HumanSize
+from pynicotine.gtkgui.utils import InitialiseColumns
+from pynicotine.gtkgui.utils import InputDialog
+from pynicotine.gtkgui.utils import OpenUri
+from pynicotine.gtkgui.utils import popupWarning
+from pynicotine.gtkgui.utils import recode
+from pynicotine.gtkgui.utils import recode2
+from pynicotine.logfacility import log
+from pynicotine.upnp import UPnPPortMapping
+
 gi.require_version('Gdk', '3.0')
 
-from gi.repository import Gdk
-from gi.repository import GObject as gobject
-from gi.repository import Gio as gio
-
-import re
-from .dirchooser import *
-from .utils import InputDialog, InitialiseColumns, recode, recode2, popupWarning, Humanize, OpenUri, HumanSize
-from .entrydialog import input_box
-from pynicotine.upnp import UPnPPortMapping
-from pynicotine.logfacility import log
-import os
-import sys
-import _thread
 
 win32 = sys.platform.startswith("win")
 if win32:
@@ -148,7 +159,7 @@ class ServerFrame(buildFrame):
 
         # We need to check if the frame has the upnppossible attribute
         # If UPnP port mapping is wanted, OnFirstConnect has been called
-        # and the attibute is set.
+        # and the attribute is set.
         # Otherwise we need to check if we have the prerequisites for allowing it.
         # The initialization of the UPnPPortMapping object and the check
         # don't generate any unwanted network traffic.
@@ -181,7 +192,7 @@ class ServerFrame(buildFrame):
             server = self.Server.get_text().split(":")
             server[1] = int(server[1])
             server = tuple(server)
-        except:
+        except Exception:
             server = None
 
         if str(self.Login.get_text()) == "None":
@@ -197,7 +208,7 @@ class ServerFrame(buildFrame):
             firstport = min(self.FirstPort.get_value_as_int(), self.LastPort.get_value_as_int())
             lastport = max(self.FirstPort.get_value_as_int(), self.LastPort.get_value_as_int())
             portrange = (firstport, lastport)
-        except:
+        except Exception:
             portrange = None
             popupWarning(
                 self.p.SettingsWindow,
@@ -540,7 +551,7 @@ class DownloadsFrame(buildFrame):
                 dfilter = dfilter.replace("\*", ".*")
 
             try:
-                re.compile("("+dfilter+")")
+                re.compile("(" + dfilter + ")")
                 outfilter += dfilter
                 proccessedfilters.append(dfilter)
             except Exception as e:
@@ -700,7 +711,7 @@ class SharesFrame(buildFrame):
             place = "Home"
             homedir = pwd.getpwuid(os.getuid())[5]
 
-        for share in self.shareddirs+self.bshareddirs:
+        for share in self.shareddirs + self.bshareddirs:
             if homedir == share:
                 popupWarning(
                     self.p.SettingsWindow,
@@ -788,7 +799,7 @@ class SharesFrame(buildFrame):
             for directory in dir1:
 
                 # If the directory is already shared
-                if directory in [x[1] for x in self.shareddirs+self.bshareddirs]:
+                if directory in [x[1] for x in self.shareddirs + self.bshareddirs]:
 
                     popupWarning(
                         self.p.SettingsWindow,
@@ -807,7 +818,7 @@ class SharesFrame(buildFrame):
                     )
 
                     # If the virtual share name is not already used
-                    if virtual == '' or virtual is None or virtual in [x[0] for x in self.shareddirs+self.bshareddirs]:
+                    if virtual == '' or virtual is None or virtual in [x[0] for x in self.shareddirs + self.bshareddirs]:
 
                         popupWarning(
                             self.p.SettingsWindow,
@@ -846,7 +857,7 @@ class SharesFrame(buildFrame):
             for directory in dir1:
 
                 # If the directory is already shared
-                if directory in [x[1] for x in self.shareddirs+self.bshareddirs]:
+                if directory in [x[1] for x in self.shareddirs + self.bshareddirs]:
 
                     popupWarning(
                         self.p.SettingsWindow,
@@ -865,7 +876,7 @@ class SharesFrame(buildFrame):
                     )
 
                     # If the virtual share name is not already used
-                    if virtual == '' or virtual is None or virtual in [x[0] for x in self.shareddirs+self.bshareddirs]:
+                    if virtual == '' or virtual is None or virtual in [x[0] for x in self.shareddirs + self.bshareddirs]:
 
                         popupWarning(
                             self.p.SettingsWindow,
@@ -1073,7 +1084,7 @@ class TransfersFrame(buildFrame):
 
         try:
             uploadallowed = self.UploadsAllowed.get_active()
-        except:
+        except Exception:
             uploadallowed = 0
 
         if not self.RemoteDownloads.get_active():
@@ -1228,7 +1239,7 @@ class UserinfoFrame(buildFrame):
 
         if self.Image.get_file().query_exists():
             size = self.Image.get_file().query_info(gio.FILE_ATTRIBUTE_STANDARD_SIZE).get_size()
-            self.ImageSize.set_text(_("Size: %s KB") % Humanize(size/1024))
+            self.ImageSize.set_text(_("Size: %s KB") % Humanize(size / 1024))
         else:
             self.ImageSize.set_text(_("Size: %s KB") % 0)
 
@@ -1341,7 +1352,7 @@ class IgnoreFrame(buildFrame):
             try:
                 if int(chars) > 255:
                     return
-            except:
+            except Exception:
                 return
 
         if ip not in self.ignored_ips:
@@ -1483,7 +1494,7 @@ class BanFrame(buildFrame):
             try:
                 if int(chars) > 255:
                     return
-            except:
+            except Exception:
                 return
 
         if ip not in self.blocked:
@@ -1882,7 +1893,7 @@ class ColoursFrame(buildFrame):
 
                     try:
                         colour = Gdk.color_parse(config[key][option])
-                    except:
+                    except Exception:
                         colour = None
 
                     drawingarea.modify_bg(gtk.StateType.NORMAL, colour)
@@ -1966,7 +1977,7 @@ class ColoursFrame(buildFrame):
 
                 try:
                     colour = Gdk.color_parse(defaults[key][option])
-                except:
+                except Exception:
                     colour = None
 
                 drawingarea.modify_bg(gtk.StateFlags.NORMAL, colour)
@@ -2021,7 +2032,7 @@ class ColoursFrame(buildFrame):
         if colour is not None and colour != '':
             try:
                 colour = Gdk.color_parse(colour)
-            except:
+            except Exception:
                 dlg.destroy()
                 return
             else:
@@ -2391,7 +2402,7 @@ class SearchFrame(buildFrame):
     def SetSettings(self, config):
         try:
             searches = config["searches"]
-        except:
+        except Exception:
             searches = None
         self.p.SetWidgetsData(config, self.options)
 
@@ -2460,7 +2471,7 @@ class AwayFrame(buildFrame):
     def GetSettings(self):
         try:
             autoaway = self.AutoAway.get_value_as_int()
-        except:
+        except Exception:
             autoaway = None
         return {
             "server": {
@@ -2650,7 +2661,7 @@ class UrlCatchFrame(buildFrame):
                 handler = self.protocolmodel.get_value(iter, 1)
                 protocols[protocol] = handler
                 iter = self.protocolmodel.iter_next(iter)
-        except:
+        except Exception:
             pass
 
         return {
@@ -2791,7 +2802,7 @@ class CensorFrame(buildFrame):
                 word = self.censorlist.get_value(iter, 0)
                 censored.append(word)
                 iter = self.censorlist.iter_next(iter)
-        except:
+        except Exception:
             pass
 
         return {
@@ -2898,7 +2909,7 @@ class AutoReplaceFrame(buildFrame):
                 replacement = self.replacelist.get_value(iter, 1)
                 autoreplaced[word] = replacement
                 iter = self.replacelist.iter_next(iter)
-        except:
+        except Exception:
             autoreplaced.clear()
 
         return {
@@ -3060,21 +3071,21 @@ class buildDialog(gtk.Dialog):
 
         self.tw["box%d" % c] = gtk.VBox(False, 5)
 
-        self.tw[name+"SW"] = gtk.ScrolledWindow()
-        self.tw[name+"SW"].set_shadow_type(gtk.SHADOW_IN)
-        self.tw[name+"SW"].set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.tw[name + "SW"] = gtk.ScrolledWindow()
+        self.tw[name + "SW"].set_shadow_type(gtk.SHADOW_IN)
+        self.tw[name + "SW"].set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 
         self.tw[name] = gtk.TreeView()
         self.tw[name].set_model(gtk.ListStore(gobject.TYPE_STRING))
-        self.tw[name+"SW"].add(self.tw[name])
+        self.tw[name + "SW"].add(self.tw[name])
 
-        self.tw["box%d" % c].pack_start(self.tw[name+"SW"], True, 5)
+        self.tw["box%d" % c].pack_start(self.tw[name + "SW"], True, 5)
 
         cols = InitialiseColumns(self.tw[name], [description, 150, "edit"])
 
         try:
             self.settings.SetWidget(self.tw[name], value)
-        except:
+        except Exception:
             pass
 
         self.addButton = gtk.Button(_("Add"), gtk.STOCK_ADD)

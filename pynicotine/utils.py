@@ -26,13 +26,13 @@
 This module contains utility functions.
 """
 
-from collections import UserDict
-from subprocess import Popen, PIPE
+import gettext
+import locale
 import os
 import sys
-import locale
-import gettext
-
+from collections import UserDict
+from subprocess import PIPE
+from subprocess import Popen
 
 version = "1.5.0"
 
@@ -361,8 +361,8 @@ def executeCommand(command, replacement=None, background=True, returnoutput=Fals
             procs.append(Popen(subcommands[-1], stdin=procs[-1].stdout, stdout=finalstdout))
         if not background and not returnoutput:
             procs[-1].wait()
-    except:
-        raise RuntimeError("Problem while executing command %s (%s of %s)" % (subcommands[len(procs)], len(procs)+1, len(subcommands)))
+    except Exception:
+        raise RuntimeError("Problem while executing command %s (%s of %s)" % (subcommands[len(procs)], len(procs) + 1, len(subcommands)))
 
     if not returnoutput:
         return True
@@ -417,4 +417,4 @@ def debug(*args):
     Prints debugging info.
     TODO: add CLI switch --debug for en-/disabling.
     """
-    print('*'*8, *[arg[:200] if isinstance(arg, str) else arg for arg in args])
+    print('*' * 8, *[arg[:200] if isinstance(arg, str) else arg for arg in args])

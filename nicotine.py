@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-#
 # COPYRIGHT (C) 2020 Lene Preuss <lene.preuss@gmail.com>
 # COPYRIGHT (C) 2016-2017 Michael Labouebe <gfarmerfr@free.fr>
 # COPYRIGHT (C) 2008-2011 Quinox <quinox@users.sf.net>
@@ -27,11 +24,13 @@
 Nicotine+ Launcher.
 """
 
-import os
 import platform
 import sys
+from gettext import gettext as _
+
 from pynicotine.logfacility import log
-from pynicotine.utils import ApplyTranslation, GetUserDirectories
+from pynicotine.utils import ApplyTranslation
+from pynicotine.utils import GetUserDirectories
 
 # Setting gettext and locale
 ApplyTranslation()
@@ -100,7 +99,7 @@ Python bindings: http://www.maxmind.com/app/python
         # dbhash might be a good choice
         try:
             import dbm.bsd
-        except:
+        except Exception:
             log.addwarning(
                 _("Warning: the Berkeley DB module, dbhash, " +
                   "could not be loaded."))
@@ -108,7 +107,7 @@ Python bindings: http://www.maxmind.com/app/python
         # win32file is used to handle hidden files
         try:
             import win32file
-        except:
+        except Exception:
             msg = _("""Nicotine+ supports hidden files attributes on windows.
 This requires a python module called pypiwin32. You can find it here:
 https://pypi.python.org/pypi/pypiwin32""")
@@ -147,7 +146,7 @@ def renameprocess(newname, debug=False):
     try:
         import procname
         procname.setprocname(newname)
-    except:
+    except Exception:
         errors.append("Failed procname module")
 
     # Renaming ourselves for pkill et al.
@@ -156,7 +155,7 @@ def renameprocess(newname, debug=False):
         # GNU/Linux style
         libc = ctypes.CDLL('libc.so.6')
         libc.prctl(15, newname, 0, 0, 0)
-    except:
+    except Exception:
         errors.append("Failed GNU/Linux style")
 
     try:
@@ -164,7 +163,7 @@ def renameprocess(newname, debug=False):
         # FreeBSD style
         libc = dl.open('/lib/libc.so.6')
         libc.call('setproctitle', newname + '\0')
-    except:
+    except Exception:
         errors.append("Failed FreeBSD style")
 
     if debug and errors:
@@ -184,16 +183,16 @@ def run():
         opts, args = getopt.getopt(sys.argv[1:],
                                    "hc:p:tdvswb:",
                                    [
-                                    "help",
-                                    "config=",
-                                    "plugins=",
-                                    "profile",
-                                    "enable-trayicon",
-                                    "disable-trayicon",
-                                    "version",
-                                    "hidden",
-                                    "bindip=",
-                                    "port="
+                                        "help",
+                                        "config=",
+                                        "plugins=",
+                                        "profile",
+                                        "enable-trayicon",
+                                        "disable-trayicon",
+                                        "version",
+                                        "hidden",
+                                        "bindip=",
+                                        "port="
                                    ]
                                    )
     except getopt.GetoptError:

@@ -21,25 +21,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Python core
-import tempfile
 import os
+import tempfile
 import time
+from gettext import gettext as _
 
-# Python modules
 import gi
-gi.require_version('Gtk', '3.0')
-
-from gi.repository import Gtk as gtk
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GObject as gobject
+from gi.repository import Gtk as gtk
 
-# Application specific
-from .utils import IconNotebook, PopupMenu, EncodingsMenu, SaveEncoding,  Humanize, InitialiseColumns, AppendLine
 from pynicotine import slskmessages
-from pynicotine.utils import CleanFile
+from pynicotine.gtkgui.utils import AppendLine
+from pynicotine.gtkgui.utils import EncodingsMenu
+from pynicotine.gtkgui.utils import Humanize
+from pynicotine.gtkgui.utils import IconNotebook
+from pynicotine.gtkgui.utils import InitialiseColumns
+from pynicotine.gtkgui.utils import PopupMenu
+from pynicotine.gtkgui.utils import SaveEncoding
 from pynicotine.logfacility import log
+from pynicotine.utils import CleanFile
+
+gi.require_version('Gtk', '3.0')
 
 
 # User Info and User Browse Notebooks
