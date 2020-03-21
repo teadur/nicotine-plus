@@ -123,7 +123,7 @@ python-versions = "*"
 version = "0.0.11.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python interface for cairo"
 name = "pycairo"
 optional = false
@@ -147,7 +147,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.1.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python bindings for GObject Introspection"
 name = "pygobject"
 optional = false
@@ -193,7 +193,7 @@ python-versions = "*"
 version = "3.7.4.1"
 
 [metadata]
-content-hash = "1e8ef61e804c87edd0cf645a93ecc8247f26268c682ccc7fa71f6341ba028485"
+content-hash = "099d246c018097065289d1887bf9359cbd55bc90a82622991482f60ef844561a"
 python-versions = "^3.6"
 
 [metadata.files]
