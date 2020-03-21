@@ -1,10 +1,6 @@
 .PHONY: install lint mypy
 .DEFAULT_GOAL := all
 
-ifeq ($(PREFIX),)
-    PREFIX := /usr/local
-endif
-
 SRC = nicotine.py pynicotine plugins
 
 all: install lint mypy
