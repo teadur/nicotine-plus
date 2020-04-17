@@ -23,20 +23,30 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
+from gettext import gettext as _
 
-from gi.repository import Gtk as gtk
+import gi
 from gi.repository import Gdk
 from gi.repository import GObject as gobject
+from gi.repository import Gtk as gtk
 
-from .utils import InitialiseColumns, PopupMenu, EncodingsMenu, SaveEncoding, Humanize, HumanSize, PressHeader
-from .dirchooser import ChooseDir
-from .entrydialog import input_box
-from pynicotine import slskmessages
 from _thread import start_new_thread
-from pynicotine.utils import displayTraceback, executeCommand, CleanFile
+from pynicotine import slskmessages
+from pynicotine.gtkgui.dirchooser import ChooseDir
+from pynicotine.gtkgui.entrydialog import input_box
+from pynicotine.gtkgui.utils import EncodingsMenu
+from pynicotine.gtkgui.utils import Humanize
+from pynicotine.gtkgui.utils import HumanSize
+from pynicotine.gtkgui.utils import InitialiseColumns
+from pynicotine.gtkgui.utils import PopupMenu
+from pynicotine.gtkgui.utils import PressHeader
+from pynicotine.gtkgui.utils import SaveEncoding
+from pynicotine.utils import CleanFile
+from pynicotine.utils import displayTraceback
+from pynicotine.utils import executeCommand
+
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
 
 
 class UserBrowse:
@@ -124,7 +134,7 @@ class UserBrowse:
                 ("#" + _("Get user i_nfo"), menu.OnGetUserInfo),
                 ("#" + _("Gi_ve privileges"), menu.OnGivePrivileges),
                 ("", None),
-                ("$" + _("_Add user to list"),  menu.OnAddToList),
+                ("$" + _("_Add user to list"), menu.OnAddToList),
                 ("$" + _("_Ban this user"), menu.OnBanUser),
                 ("$" + _("_Ignore this user"), menu.OnIgnoreUser)
             )

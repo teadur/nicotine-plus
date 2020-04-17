@@ -19,21 +19,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import gi
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
+import os
+from gettext import gettext as _
+from os.path import exists
+from os.path import getsize
+from os.path import join
 
+import gi
+from gi.repository import Gdk
 from gi.repository import GObject as gobject
 from gi.repository import Gtk as gtk
-from gi.repository import Gdk
 
-import os
 import _thread
-from os.path import exists, getsize, join
+from pynicotine.gtkgui.dirchooser import ChooseDir
+from pynicotine.gtkgui.entrydialog import input_box
+from pynicotine.gtkgui.utils import HumanSize
+from pynicotine.gtkgui.utils import InitialiseColumns
+from pynicotine.gtkgui.utils import OpenUri
+from pynicotine.gtkgui.utils import popupWarning
+from pynicotine.gtkgui.utils import recode
 
-from .dirchooser import ChooseDir
-from .utils import OpenUri, InitialiseColumns, recode, HumanSize, popupWarning
-from .entrydialog import input_box
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
 
 
 def dirstats(directory):
