@@ -30,5 +30,5 @@ RUN poetry install
 RUN pytest || true
 
 ENV DISPLAY=:0
-CMD nicotine
+CMD nicotine || sleep 10000  # keep the container running if nicotine crashes
 

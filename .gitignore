@@ -10,6 +10,9 @@ languages/nicotine-*.pot
 # Ignore venv files
 venv/*
 
+# Poetry lockfile
+poetry.lock
+
 # Ignore packaging directories and files
 MANIFEST
 build/
