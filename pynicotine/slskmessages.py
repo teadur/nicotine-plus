@@ -1930,7 +1930,7 @@ class FolderContentsResponse(PeerMessage):
                 pos, nfiles = self.getObject(message, int, pos)
                 shares[folder][directory] = []
                 for j in range(nfiles):
-                    pos, code = pos + 1, ord(message[pos])
+                    pos, code = pos + 1, message[pos]
                     pos, name = self.getObject(message, bytes, pos, printerror=False)
                     pos, size = self.getObject(message, sizetype, pos, getsignedint=1, printerror=False)
                     pos, ext = self.getObject(message, bytes, pos, printerror=False)
