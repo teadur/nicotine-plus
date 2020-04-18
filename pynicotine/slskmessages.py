@@ -435,7 +435,7 @@ class Login(ServerMessage):
         self.ip = None
 
     def __repr__(self):
-        return f"Login({self.username}, {self.passwd}, {self.version}, {self.ip})"
+        return f"Login({self.username}, {self.version}, {self.ip})"
 
     def makeNetworkMessage(self):
         payload = self.username + self.passwd

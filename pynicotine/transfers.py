@@ -36,7 +36,6 @@ import os.path
 import re
 import shutil
 import stat
-import string
 import sys
 import threading
 import time
