@@ -798,7 +798,7 @@ class SlskProtoThread(threading.Thread):
 				break
 			elif conn.init is None:
 				# Unpack Peer Connections
-				if msgBuffer[4] == chr(0):
+				if msgBuffer[4] == 0:
 					msg = PierceFireWall(conn)
 					try:
 						msg.parseNetworkMessage(msgBuffer[5:msgsize+4])
@@ -807,7 +807,7 @@ class SlskProtoThread(threading.Thread):
 					else:
 						conn.piercefw = msg
 						msgs.append(msg)
-				elif msgBuffer[4] == chr(1):
+				elif msgBuffer[4] == 1:
 					msg = PeerInit(conn)
 					try:
 						msg.parseNetworkMessage(msgBuffer[5:msgsize+4])
@@ -817,7 +817,10 @@ class SlskProtoThread(threading.Thread):
 						conn.init = msg
 						msgs.append(msg)
 				elif conn.piercefw is None:
-					msgs.append(_("Unknown peer init code: %(type)i, message contents %(msgBuffer)s") %{'type':ord(msgBuffer[4]), 'msgBuffer':msgBuffer[5:msgsize+4].__repr__()})
+					msgs.append(_(
+						f"Unknown peer init code: {msgBuffer[4]}, message contents "
+						f"{msgBuffer[5:msgsize + 4].__repr__()}"
+					))
 					conn.conn.close()
 					self._ui_callback([ConnClose(conn.conn, conn.addr)])
 					conn.conn = None
@@ -877,7 +880,7 @@ class SlskProtoThread(threading.Thread):
 			if msgsize >= 0:
 				msgBuffer = msgBuffer[msgsize+4:]
 			else:
-				msgBuffer = ""
+				msgBuffer = b""
 		conn.ibuf = msgBuffer
 		return msgs, conn
 
@@ -892,7 +895,7 @@ class SlskProtoThread(threading.Thread):
 			msgsize = struct.unpack("<i", msgBuffer[:4])[0]
 			if msgsize + 4 > len(msgBuffer):
 				break
-			msgtype = ord(msgBuffer[4])
+			msgtype = msgBuffer[4]
 			if msgtype in self.distribclasses:
 				msg = self.distribclasses[msgtype](conn)
 				msg.parseNetworkMessage(msgBuffer[5:msgsize+4])
@@ -906,7 +909,7 @@ class SlskProtoThread(threading.Thread):
 			if msgsize >= 0:
 				msgBuffer = msgBuffer[msgsize+4:]
 			else:
-				msgBuffer = ""
+				msgBuffer = b""
 		conn.ibuf = msgBuffer
 		return msgs, conn
 
