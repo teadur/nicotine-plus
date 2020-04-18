@@ -1257,7 +1257,7 @@ class TunneledMessage(ServerMessage):
         pos, self.user = self.getObject(message, bytes)
         pos, self.code = self.getObject(message, int, pos)
         pos, self.req = self.getObject(message, int, pos)
-        pos, ip = pos+4, socket.inet_ntoa(self.strrev(message[pos:pos + 4]))
+        pos, ip = pos + 4, socket.inet_ntoa(self.strrev(message[pos:pos + 4]))
         pos, port = self.getObject(message, int, pos, 1)
         self.addr = (ip, port)
         pos, self.msg = self.getObject(message, bytes, pos)

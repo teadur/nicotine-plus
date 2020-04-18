@@ -451,9 +451,10 @@ class FastConfigureAssistant(object):
         name = gtk.Buildable.get_name(widget)
 
         if name == "checkmyport":
-            OpenUri('='.join([
-                'http://tools.slsknet.org/porttest.php?port',
-                str(self.frame.np.waitport)
+            OpenUri(
+                '='.join([
+                    'http://tools.slsknet.org/porttest.php?port',
+                    str(self.frame.np.waitport)
                 ])
             )
 
