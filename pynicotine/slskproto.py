@@ -261,7 +261,7 @@ class PeerConnection(Connection):
 class PeerConnectionInProgress:
     """ As all p2p connect()s are non-blocking, this class is used to
     hold data about a connection that is not yet established. msgObj is
-    a message "".join("%02x" % b for b in conns[i].obuf)to be sent after the connection has been established.
+    a message to be sent after the connection has been established.
     """
     def __init__(self, conn=None, msgObj=None):
         self.conn = conn

@@ -35,6 +35,7 @@ from pynicotine import slskmessages
 from pynicotine.gtkgui.dirchooser import ChooseDir
 from pynicotine.gtkgui.entrydialog import input_box
 from pynicotine.gtkgui.utils import EncodingsMenu
+from pynicotine.gtkgui.utils import GetUserDirectories
 from pynicotine.gtkgui.utils import Humanize
 from pynicotine.gtkgui.utils import HumanSize
 from pynicotine.gtkgui.utils import InitialiseColumns
@@ -51,8 +52,8 @@ gi.require_version('Gdk', '3.0')
 
 class UserBrowse:
 
-    def __init__(self, userbrowses, user, conn, data_dir):
-        self.data_dir = data_dir
+    def __init__(self, userbrowses, user, conn):
+        _config_dir, self.data_dir = GetUserDirectories()
 
         # Build the window
         builder = gtk.Builder()
