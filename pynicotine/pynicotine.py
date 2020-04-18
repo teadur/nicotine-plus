@@ -28,7 +28,6 @@ This is the actual client code. Actual GUI classes are in the separate modules
 """
 
 import datetime
-import locale
 import logging
 import os
 import queue
@@ -429,11 +428,7 @@ class NetworkEventProcessor:
         if user and user in config["server"]["userencoding"]:
             coding = config["server"]["userencoding"][user]
 
-        string = self.decode(string, coding)
-        try:
-            return string.encode(locale.nl_langinfo(locale.CODESET))
-        except Exception:
-            return string
+        return self.decode(string, coding)
 
     def encode(self, str, networkenc=None):
 

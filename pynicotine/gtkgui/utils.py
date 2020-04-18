@@ -25,7 +25,6 @@
 import locale
 import os
 import re
-import string
 import sys
 import time
 import types
@@ -1428,7 +1427,7 @@ def _expand_alias(aliases, cmd):
                         last = int(args[1])
                     else:
                         last = len(cmd)
-                v = string.join(cmd[first:last + 1])
+                v = " ".join(cmd[first:last + 1])
                 if not v:
                     v = default
                 ret = ret + v
@@ -1441,7 +1440,7 @@ def _expand_alias(aliases, cmd):
                 i = i + len(arg) + 3
                 for j in range(len(cmd) - 1, -1, -1):
                     arg = arg.replace("$%i" % j, cmd[j])
-                arg = arg.replace("$@", string.join(cmd[1:], " "))
+                arg = arg.replace("$@", " ".join(cmd[1:]))
 
                 import subprocess
 

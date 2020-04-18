@@ -27,7 +27,6 @@ import os
 import random
 import re
 import sre_constants
-import string
 from gettext import gettext as _
 
 import gi
@@ -1596,7 +1595,7 @@ class Search:
         for i in self.selected_results:
 
             user = i[0]
-            dir = string.join(i[1].split("\\")[:-1], "\\")
+            dir = "\\".join(i[1].split("\\")[:-1])
 
             if (user, dir) in folders:
                 continue
@@ -1623,7 +1622,7 @@ class Search:
         for i in self.selected_results:
 
             user = i[0]
-            dir = string.join(i[1].split("\\")[:-1], "\\")
+            dir = "\\".join(i[1].split("\\")[:-1]) + "\\"
 
             if (user, dir) in folders:
                 continue
@@ -1647,7 +1646,7 @@ class Search:
     def OnCopyDirURL(self, widget):
 
         user, path = self.selected_results[0][:2]
-        path = string.join(path.split("\\")[:-1], "\\") + "\\"
+        path = "\\".join(path.split("\\")[:-1]) + "\\"
 
         if path[:-1] != "/":
             path += "/"

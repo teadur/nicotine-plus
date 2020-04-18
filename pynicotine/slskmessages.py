@@ -447,7 +447,7 @@ class Login(ServerMessage):
         return message
 
     def parseNetworkMessage(self, message):
-        pos, self.success = 1, (ord(message[0]) if isinstance(message[0], str) else message[0])
+        pos, self.success = 1, message[0]
         if not self.success:
             pos, self.reason = self.getObject(message, bytes, pos)
 
@@ -576,7 +576,7 @@ class GetUserStatus(ServerMessage):
         pos, self.status = self.getObject(message, int, pos)
         # Exception handler is for Soulfind compatibility
         try:
-            pos, self.privileged = pos + 1, ord(message[pos])
+            pos, self.privileged = pos + 1, message[pos]
         except Exception:
             pass
 
@@ -1692,11 +1692,11 @@ class UserInfoReply(PeerMessage):
     def parseNetworkMessage(self, message):
         pos, self.descr = self.getObject(message, bytes)
         pos, self.has_pic = pos + 1, message[pos]
-        if ord(self.has_pic):
+        if self.has_pic:
             pos, self.pic = self.getObject(message, bytes, pos)
         pos, self.totalupl = self.getObject(message, int, pos)
         pos, self.queuesize = self.getObject(message, int, pos)
-        pos, self.slotsavail = pos + 1, ord(message[pos])
+        pos, self.slotsavail = pos + 1, message[pos]
 
         if len(message[pos:]) >= 4:
             pos, self.uploadallowed = self.getObject(message, int, pos)
@@ -1741,7 +1741,7 @@ class SharedFileList(PeerMessage):
             pos, nfiles = self.getObject(message, int, pos)
             files = []
             for j in range(nfiles):
-                pos, code = pos + 1, ord(message[pos])
+                pos, code = pos + 1, message[pos]
                 pos, name = self.getObject(message, bytes, pos)
                 pos, size = self.getObject(message, sizetype, pos, getsignedint=True, printerror=False)
                 if message[pos - 1] == '\xff':
@@ -1835,7 +1835,7 @@ class FileSearchResult(PeerMessage):
         self.pos, nfiles = self.getObject(message, int, self.pos)
         shares = []
         for i in range(nfiles):
-            self.pos, code = self.pos + 1, ord(message[self.pos])
+            self.pos, code = self.pos + 1, message[self.pos]
             self.pos, name = self.getObject(message, bytes, self.pos)
             # suppressing errors with unpacking, can be caused by incorrect sizetype
             self.pos, size = self.getObject(message, sizetype, self.pos, printerror=False)
@@ -1849,7 +1849,7 @@ class FileSearchResult(PeerMessage):
                     attrs.append(attr)
             shares.append([code, name, size, ext, attrs])
         self.list = shares
-        self.pos, self.freeulslots = self.pos + 1, ord(message[self.pos])
+        self.pos, self.freeulslots = self.pos + 1, message[self.pos]
         self.pos, self.ulspeed = self.getObject(message, int, self.pos, getsignedint=1)
         self.pos, self.inqueue = self.getObject(message, int, self.pos)
 
@@ -2003,7 +2003,7 @@ class TransferResponse(PeerMessage):
 
     def parseNetworkMessage(self, message):
         pos, self.req = self.getObject(message, int)
-        pos, self.allowed = pos + 1, ord(message[pos])
+        pos, self.allowed = pos + 1, message[pos]
         if message[pos:] != "":
             if self.allowed:
                 pos, self.filesize = self.getObject(message, int, pos)
@@ -2209,7 +2209,7 @@ class SearchRequest(ServerMessage):
         pass
 
     def parseNetworkMessage(self, message):
-        pos, self.code = 1, ord(message[0])
+        pos, self.code = 1, message[0]
         pos, self.something = self.getObject(message, int, pos)
         pos, self.user = self.getObject(message, bytes, pos)
         pos, self.searchid = self.getObject(message, int, pos)
@@ -2226,8 +2226,8 @@ class UserPrivileged(ServerMessage):
         return self.packObject(self.user)
 
     def parseNetworkMessage(self, message):
-        pos, self.user = self.getObject(message, bytes, pos)  # noqa: F821
-        pos, self.privileged = pos + 1, bool(ord(message[pos]))
+        pos, self.user = self.getObject(message, bytes, 0)  # noqa: F821
+        pos, self.privileged = pos + 1, bool(message[pos])
 
 
 class GivePrivileges(ServerMessage):

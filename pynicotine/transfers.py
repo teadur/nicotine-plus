@@ -1948,8 +1948,4 @@ class Transfers:
         if user and user in config["server"]["userencoding"]:
             coding = config["server"]["userencoding"][user]
 
-        string = self.eventprocessor.decode(string, coding)
-        try:
-            return string.encode(locale.nl_langinfo(locale.CODESET))
-        except Exception:
-            return string
+        return self.eventprocessor.decode(string, coding)

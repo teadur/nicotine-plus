@@ -22,7 +22,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import string
 from gettext import gettext as _
 from math import ceil
 from time import time
@@ -593,7 +592,7 @@ class TransferList:
     def OnCopyDirURL(self, widget):
 
         i = self.selected_transfers[0]
-        path = string.join(i.filename.split("\\")[:-1], "\\") + "\\"
+        path = "\\".join(i.filename.split("\\")[:-1]) + "\\"
 
         if path[:-1] != "/":
             path += "/"
