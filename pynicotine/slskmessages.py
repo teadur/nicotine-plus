@@ -1991,7 +1991,7 @@ class TransferResponse(PeerMessage):
         self.filesize = filesize
 
     def makeNetworkMessage(self):
-        msg = self.packObject(NetworkIntType(self.req)) + chr(self.allowed)
+        msg = self.packObject(NetworkIntType(self.req)) + bytes([self.allowed])
         if self.reason is not None:
             msg = msg + self.packObject(self.reason)
         if self.filesize is not None:
