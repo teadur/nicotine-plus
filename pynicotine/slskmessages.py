@@ -320,11 +320,6 @@ class SlskMessage:
                     return intsize+start, struct.unpack("<i", message[start:start+intsize])[0]
                 else:
                     return intsize+start, struct.unpack("<I", message[start:start+intsize])[0]
-            elif type is int:
-                if getsignedint:
-                    return struct.calcsize("<Q")+start, struct.unpack("<Q", message[start:start+struct.calcsize("<Q")])[0]
-                else:
-                    return struct.calcsize("<L")+start, struct.unpack("<L", message[start:start+struct.calcsize("<L")])[0]
             elif type is bytes:
                 length = struct.unpack("<I", message[start:start+intsize])[0]
                 string = message[start+intsize:start+length+intsize].decode('utf-8', errors='replace')
@@ -347,9 +342,10 @@ class SlskMessage:
         """ Returns object (integer, long or string packed into a
         binary array."""
         if type(object) is int:
-            return struct.pack("<i", object)
-        elif type(object) is int:
-            return struct.pack("<Q", object)
+            if object.bit_length() <= 32:
+                return struct.pack("<i", object)
+            else:
+                return struct.pack("<Q", object)
         elif type(object) is bytes:
             return struct.pack("<i", len(object)) + object
         elif type(object) is ToBeEncoded:
@@ -365,7 +361,7 @@ class SlskMessage:
         elif type(object) is NetworkLongLongType:
             return struct.pack("<Q", object.value)
         log.addwarning(_("Warning: unknown object type %s") % type(object) +" "+ ("in message %(type)s") % {'type': self.__class__})
-        return ""
+        return b""
 
     def makeNetworkMessage(self):
         """ Returns binary array, that can be sent over the network"""
@@ -453,7 +449,7 @@ class Login(ServerMessage):
         if len(message[pos:]) > 0:
             try:
                 import socket
-                pos, self.ip = pos+4, socket.inet_ntoa(message[pos+4:pos:-1])
+                pos, self.ip = pos+4, socket.inet_ntoa(message[pos:pos+4][::-1])
                 # Unknown number
             except Exception as error:
                 log.addwarning("Error unpacking IP address: %s" % (error,))
@@ -504,7 +500,7 @@ class GetPeerAddress(ServerMessage):
     def parseNetworkMessage(self, message):
         pos, self.user = self.getObject(message, bytes)
         import socket
-        pos, self.ip = pos+4, socket.inet_ntoa(message[pos+4:pos:-1])
+        pos, self.ip = pos + 4, socket.inet_ntoa(message[pos:pos + 4][::-1])
         pos, self.port = self.getObject(message, int, pos, 1)
 
 
@@ -1015,7 +1011,7 @@ class ConnectToPeer(ServerMessage):
         pos, self.user = self.getObject(message, bytes)
         pos, self.type = self.getObject(message, bytes, pos)
         import socket
-        pos, self.ip = pos+4, socket.inet_ntoa(message[pos+4:pos:-1])
+        pos, self.ip = pos + 4, socket.inet_ntoa(message[pos:pos + 4][::-1])
         pos, self.port = self.getObject(message, int, pos, 1)
         pos, self.token = self.getObject(message, int, pos)
         if len(message[pos:]) > 0:
@@ -1172,7 +1168,7 @@ class RoomList(ServerMessage):
         pass
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         pos, numrooms = self.getObject(message, int)
@@ -1231,7 +1227,7 @@ class GlobalUserList(JoinRoom):
         pass
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         pos, self.users = self.getUsers(message)
@@ -1332,10 +1328,10 @@ class UploadQueueNotification(PeerMessage):
         self.conn = conn
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
-        return ""
+        return b""
 
 
 class Msg89(ServerMessage):
@@ -1389,7 +1385,7 @@ class CheckPrivileges(ServerMessage):
         pass
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         pos, self.seconds = self.getObject(message, int)
@@ -1495,7 +1491,7 @@ class GlobalRecommendations(ServerMessage):
         self.unrecommendations = None
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         self.unpack_recommendations(message)
@@ -1541,7 +1537,7 @@ class SimilarUsers(ServerMessage):
         self.users = None
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         self.users = {}
@@ -1669,7 +1665,7 @@ class UserInfoRequest(PeerMessage):
         self.conn = conn
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
     def parseNetworkMessage(self, message):
         pass
@@ -1787,7 +1783,7 @@ class GetSharedFileList(PeerMessage):
         pass
 
     def makeNetworkMessage(self):
-        return ""
+        return b""
 
 
 class FileSearchRequest(PeerMessage):
@@ -2195,8 +2191,7 @@ class NetInfo(ServerMessage):
         for i in range(num):
             pos, username = self.getObject(message, bytes, pos)
             import socket
-            # pos, ip = pos+4, socket.inet_ntoa(self.strrev(message[pos:pos+4]))
-            pos, ip = pos+4, socket.inet_ntoa(message[pos+4:pos:-1])
+            pos, self.ip = pos + 4, socket.inet_ntoa(message[pos:pos + 4][::-1])
             pos, port = self.getObject(message, int, pos)
             self.list[username] = (ip, port)
 
