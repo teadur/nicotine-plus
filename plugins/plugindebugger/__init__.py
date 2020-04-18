@@ -45,7 +45,7 @@ class Plugin(BasePlugin):
         pass
 
     def OutgoingPrivateChatNotification(self, user, line):
-        self.log('OutgoingPrivateChatNotification, user=%s, line=%s' % (room, line))
+        self.log('OutgoingPrivateChatNotification, user=%s, line=%s' % (room, line))  # noqa: F821
         pass
 
     def OutgoingPublicChatEvent(self, room, line):

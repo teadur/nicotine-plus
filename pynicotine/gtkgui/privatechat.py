@@ -467,7 +467,7 @@ class PrivateChat:
             s = d.split("\n")
             for l in s[- lines:-1]:
                 AppendLine(self.ChatScroll, l + "\n", self.tag_hilite, timestamp_format="", username=self.user, usertag=self.tag_hilite)
-        except IOError as e:
+        except IOError as e:  # noqa: F841
             pass
 
         gobject.idle_add(self.frame.ScrollBottom, self.ChatScroll.get_parent())
@@ -825,7 +825,7 @@ class PrivateChat:
         gobject.idle_add(self.frame.ScrollBottom, self.ChatScroll.get_parent())
 
     def NowPlayingThread(self):
-        np = self.frame.now.DisplayNowPlaying(None, 0, self.SendMessage)
+        np = self.frame.now.DisplayNowPlaying(None, 0, self.SendMessage)  # noqa: F841
 
     def makecolour(self, buffer, colour):
 

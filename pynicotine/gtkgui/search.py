@@ -546,7 +546,7 @@ class Searches(IconNotebook):
             ("#" + _("Detach this tab"), self.searches[id][2].Detach),
             ("#" + _("Close this tab"), self.searches[id][2].OnClose)
         )
-        items = popup.get_children()
+        items = popup.get_children()  # noqa: F841
 
         return popup
 
@@ -768,7 +768,7 @@ class Search:
 
     def OnFilterChanged(self, widget):
 
-        model = widget.get_model()
+        model = widget.get_model()  # noqa: F841
         iter = widget.get_active_iter()
 
         if iter:
@@ -876,7 +876,7 @@ class Search:
         else:
             imdl = "N"
 
-        decode = self.frame.np.decode
+        decode = self.frame.np.decode  # noqa: F841
 
         for result in msg.list:
 
@@ -943,7 +943,7 @@ class Search:
                         br = a[0]
 
                         # Dividing the file size by the bitrate in Bytes should give us a good enough approximation
-                        l = result[2] / (br / 8 * 1000)
+                        l = result[2] / (br / 8 * 1000)  # noqa: E741
 
                         length = '%i:%02i' % (l / 60, l % 60)
 
@@ -1257,7 +1257,7 @@ class Search:
                     if user in self.usersiters:
                         iter = self.resultsmodel.append(self.usersiters[user], encoded_row)
                     else:
-                        iter = self.resultsmodel.append(None, encoded_row)
+                        iter = self.resultsmodel.append(None, encoded_row)  # noqa: F841
                 except Exception as e:
                     print("Filters: Search row error:", e)
                     for i in encoded_row:

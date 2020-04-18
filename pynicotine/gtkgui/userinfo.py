@@ -272,7 +272,7 @@ class UserInfo:
             if self.encoding == item[1]:
                 self.Encoding.set_active_iter(self.Elist[self.encoding])
 
-        self.tag_local = self.makecolour(buffer, "chatremote")
+        self.tag_local = self.makecolour(buffer, "chatremote")  # noqa: F821
         self.ChangeColours()
 
         self.InterestsExpander.connect("activate", self.ExpanderStatus)
@@ -475,14 +475,14 @@ class UserInfo:
                 gc.collect()
                 self.actual_zoom = 0
                 self.SavePicture.set_sensitive(True)
-            except TypeError as e:
+            except TypeError as e:  # noqa: F841
                 name = tempfile.mktemp()
                 f = open(name, "w")
                 f.write(pic)
                 f.close()
                 self.image.set_from_file(name)
                 os.remove(name)
-            except Exception as e:
+            except Exception as e:  # noqa: F841
                 self.image.set_from_pixbuf(None)
                 self.SavePicture.set_sensitive(False)
         else:

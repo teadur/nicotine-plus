@@ -571,7 +571,7 @@ class UserBrowse:
                         except ValueError:
                             rl = 0
 
-                        l = "%i:%02i" % (rl / 60, rl % 60)
+                        l = "%i:%02i" % (rl / 60, rl % 60)  # noqa: E741
                         f += [br, l]
                     else:
                         f += ["", ""]
@@ -582,7 +582,7 @@ class UserBrowse:
 
             try:
                 self.files[f[0]] = self.FileStore.append(f)
-            except Exception as error:
+            except Exception as error:  # noqa: F841
                 displayTraceback()
 
     def OnSave(self, widget):
@@ -959,7 +959,7 @@ class UserBrowse:
 
             sel = self.FileTreeView.get_selection()
             sel.unselect_all()
-            l = 1
+            l = 1  # noqa: E741
             resultfiles.sort()
 
             for fn in resultfiles:
@@ -971,7 +971,7 @@ class UserBrowse:
                 if l:
                     # Position cursor at first match
                     self.FileTreeView.scroll_to_cell(path, None, True, 0.5, 0.5)
-                    l = 0
+                    l = 0  # noqa: E741
         else:
             self.search_position = 0
 

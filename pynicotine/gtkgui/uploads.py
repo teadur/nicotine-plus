@@ -374,7 +374,7 @@ class Uploads(TransferList):
         self.SelectCurrentRow(event, kind)
 
         users = len(self.selected_users) > 0
-        multi_users = len(self.selected_users) > 1
+        multi_users = len(self.selected_users) > 1  # noqa: F841
         files = len(self.selected_transfers) > 0
         multi_files = len(self.selected_transfers) > 1
 

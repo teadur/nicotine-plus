@@ -575,7 +575,7 @@ class NowPlaying:
                 self.title["bitrate"] = output
 
         if "$f" in slist:
-            path = self.audacious_command('current-song-filename')
+            path = self.audacious_command('current-song-filename')  # noqa: F841
 
         if not self.audacious_running:
             log.addwarning(_("ERROR: audacious: audtool didn't detect a running Audacious session."))
@@ -746,7 +746,7 @@ class NowPlaying:
 
         try:
             (user, apikey) = self.NPCommand.get_text().split(';')
-        except ValueError as error:
+        except ValueError as error:  # noqa: F841
             log.addwarning(_("ERROR: lastfm: Please provide both your lastfm username and API key"))
             return None
 

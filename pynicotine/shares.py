@@ -305,7 +305,7 @@ class Shares:
         elif checkuser == 2:
             shares = self.config.sections["transfers"]["bsharedfiles"]
         else:
-            response = self.queue.put(slskmessages.TransferResponse(msg.conn.conn, 0, reason=reason, req=0))
+            response = self.queue.put(slskmessages.TransferResponse(msg.conn.conn, 0, reason=reason, req=0))  # noqa: F841
             shares = {}
 
         if checkuser:
@@ -644,7 +644,7 @@ class Shares:
     def getFilesStreams(self, mtimes, oldmtimes, oldstreams, newsharedfiles, rebuild=False, yieldcall=None):
 
         streams = {}
-        shared = self.config.sections["transfers"]["shared"]
+        shared = self.config.sections["transfers"]["shared"]  # noqa: F841
 
         for directory in list(mtimes.keys()):
 
@@ -723,7 +723,7 @@ class Shares:
 
                 try:
                     mtime = os.path.getmtime(u_path)
-                except OSError as errtuple:
+                except OSError as errtuple:  # noqa: F841
                     try:
                         mtime = os.path.getmtime(s_path)
                     except OSError as errtuple:
@@ -763,7 +763,7 @@ class Shares:
 
             # force Unicode for reading from disk
             u_directory = "%s" % directory
-            str_directory = str(directory)
+            str_directory = str(directory)  # noqa: F841
 
             if self.hiddenCheck({'dir': directory}):
                 continue
@@ -871,7 +871,7 @@ class Shares:
     def getFilesStreamsUnicode(self, mtimes, oldmtimes, oldstreams, newsharedfiles, rebuild=False, yieldcall=None):
 
         streams = {}
-        shared = self.config.sections["transfers"]["shared"]
+        shared = self.config.sections["transfers"]["shared"]  # noqa: F841
 
         for directory in list(mtimes.keys()):
 
@@ -879,7 +879,7 @@ class Shares:
 
             # force Unicode for reading from disk
             u_directory = "%s" % directory
-            str_directory = str(directory)
+            str_directory = str(directory)  # noqa: F841
 
             if self.hiddenCheck({'dir': directory}):
                 continue
@@ -930,7 +930,7 @@ class Shares:
 
             try:
                 from win32file import GetFileAttributes
-            except ImportError as e:
+            except ImportError as e:  # noqa: F841
                 pass
             else:
 
@@ -1063,7 +1063,7 @@ class Shares:
 
         dir = str(os.path.expanduser(os.path.dirname(name)))
         file = str(os.path.basename(name))
-        size = os.path.getsize(name)
+        size = os.path.getsize(name)  # noqa: F841
 
         shared[dir] = shared.get(dir, [])
 
@@ -1097,7 +1097,7 @@ class Shares:
 
         dir = str(os.path.expanduser(os.path.dirname(name)))
         file = str(os.path.basename(name))
-        size = os.path.getsize(name)
+        size = os.path.getsize(name)  # noqa: F841
 
         bshared[dir] = bshared.get(dir, [])
 

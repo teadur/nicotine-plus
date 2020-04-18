@@ -24,14 +24,14 @@ if __name__ == "__main__":
         parts = tuple.split('\t', 1)
         item = parts[0].strip()
         if item:
-            info[item.lower()] = value
+            info[item.lower()] = value  # noqa: F821
     conversation.ConnectTo("xmplay", "info1")
     reply = conversation.Request("info1")
     for tuple in reply.split('\n'):
         parts = tuple.split('\t', 1)
         item = parts[0].strip()
         if item:
-            info[item.lower()] = value
+            info[item.lower()] = value  # noqa: F821
 
     keys = list(info.keys())
     keys.sort(reverse=True, key=len)

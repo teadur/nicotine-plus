@@ -33,7 +33,6 @@ import urllib.request
 from gettext import gettext as _
 
 import gi
-
 from gi.repository import Gdk
 from gi.repository import GdkPixbuf
 from gi.repository import GObject as gobject
@@ -328,7 +327,7 @@ class NicotineFrame:
         self.minimized = False
         self.HiddenTabs = {}
 
-        display = Gdk.Display.get_default()
+        display = Gdk.Display.get_default()  # noqa: F841
         self.clip = gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
 
         # Popup menu on the log windows
@@ -741,7 +740,7 @@ class NicotineFrame:
                 third=_("Send to tray")
             )
         else:
-            option = QuitBox(
+            option = QuitBox(  # noqa: F841
                 self,
                 title=_('Close Nicotine+?'),
                 message=_('Are you sure you wish to exit Nicotine+ at this time?'),
@@ -775,10 +774,10 @@ class NicotineFrame:
             self.pynotifyBox = self.pynotify.Notification(title, xmlmessage)
             self.pynotifyBox.set_icon_from_pixbuf(self.images["notify"])
             try:
-                n.attach_to_status_icon(self.TrayApp.trayicon)
+                n.attach_to_status_icon(self.TrayApp.trayicon)  # noqa: F821
             except Exception:
                 try:
-                    n.attach_to_widget(self.TrayApp.trayicon)
+                    n.attach_to_widget(self.TrayApp.trayicon)  # noqa: F821
                 except Exception:
                     pass
         else:
@@ -1894,7 +1893,7 @@ class NicotineFrame:
         for i in tabs:
             tabLabels.append(self.MainNotebook.get_tab_label(i))
 
-        l = tabLabels[page_nr]
+        l = tabLabels[page_nr]  # noqa: E741
 
         compare = {
             self.ChatTabLabel: self.ChatNotebook,
@@ -1944,8 +1943,8 @@ class NicotineFrame:
 
         def _calc(l):
             bandwidth = 0.0
-            users = 0
-            l = [i for i in l if i.conn is not None]
+            users = 0  # noqa: F841
+            l = [i for i in l if i.conn is not None]  # noqa: E741
             for i in l:
                 if i.speed is not None:
                     bandwidth = bandwidth + i.speed
@@ -3013,7 +3012,7 @@ class NicotineFrame:
             self.FindDialog.currentPosition = buffer.create_mark(None, start, False)
             self.FindDialog.nextPosition = buffer.create_mark(None, start, False)
 
-        second = 0
+        second = 0  # noqa: F841
 
         if direction == "next":
             current = buffer.get_mark("insert")
@@ -3747,7 +3746,7 @@ class gstreamer:
             import pygst
             pygst.require("0.10")
             import gst
-        except Exception as error:
+        except Exception as error:  # noqa: F841
             return
         self.gst = gst
         try:

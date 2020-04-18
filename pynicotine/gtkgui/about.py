@@ -530,7 +530,7 @@ class GenericTableDialog(GenericAboutDialog):
         table.set_row_spacings(2)
 
         for i in range(rows):
-            l = gtk.Label()
+            l = gtk.Label()  # noqa: E741
             l.set_markup(self.items[i * 2])
             l.set_alignment(0.0, 0.5)
             l.set_selectable(True)

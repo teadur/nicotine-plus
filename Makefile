@@ -1,7 +1,7 @@
 .PHONY: install lint mypy
 .DEFAULT_GOAL := all
 
-SRC = nicotine.py pynicotine plugins
+SRC = nicotine pynicotine plugins
 
 all: install lint mypy
 

@@ -302,7 +302,7 @@ class RoomsControl:
         if event.button != 3 or self.roomsmodel is None:
             return
 
-        items = self.popup_menu.get_children()
+        items = self.popup_menu.get_children()  # noqa: F841
         d = self.frame.roomlist.RoomsList.get_path_at_pos(int(event.x), int(event.y))
 
         if d:
@@ -422,7 +422,7 @@ class RoomsControl:
 
             self.autojoin = 0
             if self.joinedrooms:
-                list = list(self.joinedrooms.keys())
+                list = list(self.joinedrooms.keys())  # noqa: F823
             else:
                 list = self.frame.np.config.sections["server"]["autojoin"]
 
@@ -860,7 +860,7 @@ def TickDialog(parent, default=""):
     dlg.set_border_width(10)
     dlg.vbox.set_spacing(10)
 
-    l = gtk.Label(_("Set room ticker message:"))
+    l = gtk.Label(_("Set room ticker message:"))  # noqa: E741
     l.set_alignment(0, 0.5)
     dlg.vbox.pack_start(l, False, False, 0)
 
@@ -1187,7 +1187,7 @@ class ChatRoom:
 
             for bytes in loglines[-roomlines:-1]:
 
-                l = findBestEncoding(bytes, encodings)
+                l = findBestEncoding(bytes, encodings)  # noqa: E741
 
                 # Try to parse line for username
                 if len(l) > 20 and l[10].isspace() and l[11].isdigit() and l[20] in ("[", "*"):
@@ -1217,7 +1217,7 @@ class ChatRoom:
                     tag = None
                     usertag = None
 
-                timestamp_format = self.frame.np.config.sections["logging"]["rooms_timestamp"]
+                timestamp_format = self.frame.np.config.sections["logging"]["rooms_timestamp"]  # noqa: F841
 
                 line = re.sub(r"\\s\\s+", "  ", line)
                 line += "\n"
@@ -1231,7 +1231,7 @@ class ChatRoom:
                 self.lines.append(AppendLine(self.ChatScroll, _("--- old messages above ---"), self.tag_hilite))
 
             gobject.idle_add(self.frame.ScrollBottom, self.ChatScroll.get_parent())
-        except IOError as e:
+        except IOError as e:  # noqa: F841
             pass
 
     def on_key_press_event(self, widget, event):
@@ -1300,16 +1300,16 @@ class ChatRoom:
             return
 
         menu = popup
-        user = menu.user
-        items = menu.get_children()
+        user = menu.user  # noqa: F841
+        items = menu.get_children()  # noqa: F841
 
-        act = False
+        act = False  # noqa: F841
 
         return True
 
     def OnPopupMenu(self, widget, event):
 
-        items = self.popup_menu.get_children()
+        items = self.popup_menu.get_children()  # noqa: F841
         d = self.UserList.get_path_at_pos(int(event.x), int(event.y))
 
         if not d:

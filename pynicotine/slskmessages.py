@@ -860,7 +860,7 @@ class PrivateRoomToggle(ServerMessage):
 
     def parseNetworkMessage(self, message):
         # When this is received, we store it in the config, and disable the appropriate menu item
-        pos, self.enabled = 1, bool(int(message[0]))
+        pos, self.enabled = 1, bool(int(message[0]))  # noqa: F841
 
 
 class PrivateRoomAddOperator(ServerMessage):
@@ -1377,7 +1377,7 @@ class PrivilegedUsers(ServerMessage):
         try:
             x = zlib.decompress(message)
             message = x[4:]
-        except Exception as error:
+        except Exception as error:  # noqa: F841
             pass
         self.users = []
         pos, numusers = self.getObject(message, int)
@@ -2143,7 +2143,7 @@ class DistribMessage9(DistribMessage):
     def parseNetworkMessage(self, message):
         # pos, self.value = self.getObject(message, types.IntType)
         try:
-            x = zlib.decompress(message)
+            x = zlib.decompress(message)  # noqa: F841
         except Exception:
             self.debug()
         # message =  x[4:]
@@ -2226,7 +2226,7 @@ class UserPrivileged(ServerMessage):
         return self.packObject(self.user)
 
     def parseNetworkMessage(self, message):
-        pos, self.user = self.getObject(message, bytes, pos)
+        pos, self.user = self.getObject(message, bytes, pos)  # noqa: F821
         pos, self.privileged = pos + 1, bool(ord(message[pos]))
 
 

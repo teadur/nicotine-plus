@@ -437,7 +437,7 @@ class Transfers:
     def TransferRequest(self, msg):
 
         user = response = None
-        transfers = self.eventprocessor.config.sections["transfers"]
+        transfers = self.eventprocessor.config.sections["transfers"]  # noqa: F841
 
         if msg.conn is not None:
             for i in self.peerconns:
@@ -1203,7 +1203,7 @@ class Transfers:
                     if newname:
                         try:
                             shutil.move(msg.file.name, newname)
-                        except (IOError, OSError) as inst:
+                        except (IOError, OSError) as inst:  # noqa: F841
                             try:
                                 shutil.move(msg.file.name, "%s" % newname)
                             except (IOError, OSError) as inst:
@@ -1538,7 +1538,7 @@ class Transfers:
                         break
         else:
             # Todo
-            list = listpriv = {user: time.time()}
+            list = listpriv = {user: time.time()}  # noqa: F841
             countpriv = 0
             trusers = self.getTransferringUsers()
             count = 0

@@ -622,11 +622,11 @@ class SharesFrame(buildFrame):
 
         self.bshareddirs = []
 
-        column = gtk.TreeViewColumn(
+        column = gtk.TreeViewColumn(  # noqa: F841
             "Shared dirs", gtk.CellRendererText(), text=0
         )
 
-        columns = InitialiseColumns(
+        columns = InitialiseColumns(  # noqa: F841
             self.Shares,
             [_("Virtual Directory"), 0, "text"],
             [_("Directory"), 0, "text"],
@@ -636,7 +636,7 @@ class SharesFrame(buildFrame):
         self.Shares.set_model(self.shareslist)
         self.Shares.get_selection().set_mode(gtk.SelectionMode.MULTIPLE)
 
-        bcolumns = InitialiseColumns(
+        bcolumns = InitialiseColumns(  # noqa: F841
             self.BuddyShares,
             [_("Virtual Directory"), 0, "text"],
             [_("Directory"), 0, "text"],
@@ -731,7 +731,7 @@ class SharesFrame(buildFrame):
         # Public shares related menus are deactivated if we only share with friends
         friendsonly = self.FriendsOnly.get_active()
 
-        public_shares_configured = isinstance(self.Shares.get_model().get_iter_first(), gtk.TreeIter)
+        public_shares_configured = isinstance(self.Shares.get_model().get_iter_first(), gtk.TreeIter)  # noqa: F841
 
         self.frame.rescan_public.set_sensitive(not friendsonly)
         self.frame.rebuild_public.set_sensitive(not friendsonly)
@@ -1151,10 +1151,10 @@ class GeoBlockFrame(buildFrame):
         }
 
         try:
-            import GeoIP
+            import GeoIP  # noqa: F401
         except ImportError:
             try:
-                import _GeoIP
+                import _GeoIP  # noqa: F401
             except ImportError:
                 self.GeoBlock.set_sensitive(False)
                 self.GeoPanic.set_sensitive(False)
@@ -1280,7 +1280,7 @@ class IgnoreFrame(buildFrame):
 
     def SetSettings(self, config):
         server = config["server"]
-        transfers = config["transfers"]
+        transfers = config["transfers"]  # noqa: F841
 
         self.ignorelist.clear()
         self.ignored_ips_list.clear()
@@ -2248,9 +2248,9 @@ class BloatFrame(buildFrame):
 
         self.needcolors = 0
 
-        ui = config["ui"]
+        ui = config["ui"]  # noqa: F841
 
-        transfers = config["transfers"]
+        transfers = config["transfers"]  # noqa: F841
 
         self.SpellCheck.set_sensitive(self.frame.SEXY)
 
@@ -2465,7 +2465,7 @@ class AwayFrame(buildFrame):
         }
 
     def SetSettings(self, config):
-        server = config["server"]
+        server = config["server"]  # noqa: F841
         self.p.SetWidgetsData(config, self.options)
 
     def GetSettings(self):
@@ -2778,7 +2778,7 @@ class CensorFrame(buildFrame):
 
         self.p.SetWidgetsData(config, self.options)
 
-        words = config["words"]
+        words = config["words"]  # noqa: F841
 
         self.OnCensorCheck(self.CensorCheck)
 
@@ -2987,7 +2987,7 @@ class CompletionFrame(buildFrame):
         self.CompleteRoomNamesCheck.connect("toggled", self.OnCompletionChanged)
 
     def SetSettings(self, config):
-        completion = config["words"]
+        completion = config["words"]  # noqa: F841
         self.needcompletion = 0
         self.p.SetWidgetsData(config, self.options)
 
@@ -3323,7 +3323,7 @@ class PluginFrame(buildFrame):
                 "enable": self.PluginsEnable.get_active(),
                 "enabled": list(self.frame.pluginhandler.enabled_plugins.keys())
             }
-         }
+         }  # noqa: E121
 
 
 class ChatFrame(buildFrame):
@@ -3667,5 +3667,5 @@ class SettingsWindow:
                     config[key].update(data)
 
             return self.pages["Shares"].GetNeedRescan(), (self.pages["Colours"].needcolors or self.pages["Interface"].needcolors), self.pages["Completion"].needcompletion, config
-        except UserWarning as warning:
+        except UserWarning as warning:  # noqa: F841
             return None

@@ -87,7 +87,7 @@ def popupWarning(parent, title, warning, icon=None):
 
     dlg.vbox.show_all()
 
-    result = None
+    result = None  # noqa: F841
     if dlg.run() == gtk.ResponseType.OK:
         dlg.destroy()
 
@@ -309,7 +309,7 @@ def OpenUri(uri):
         import gnomevfs
         gnomevfs.url_show(uri)
         return
-    except Exception as e:
+    except Exception as e:  # noqa: F841
         pass
 
 
@@ -365,7 +365,7 @@ def AppendLine(textview, line, tag=None, timestamp=None, showstamp=True, timesta
     ME = 0
 
     if line.startswith("* "):
-        ME = 1
+        ME = 1  # noqa: F841
 
     TIMESTAMP = None
     TS = 0
@@ -1191,7 +1191,7 @@ class PopupMenu(gtk.Menu):
         if self.user is None or self.user == self.frame.np.config.sections["server"]["login"]:
             return False
 
-        user = self.user
+        user = self.user  # noqa: F841
         items = []
         popup = self.frame.userlist.Popup_Menu_PrivateRooms
         popup.clear()
@@ -1227,7 +1227,7 @@ def InputDialog(parent, title, message, default=""):
     dlg.set_border_width(10)
     dlg.vbox.set_spacing(10)
 
-    l = gtk.Label(message)
+    l = gtk.Label(message)  # noqa: E741
     l.set_alignment(0, 0.5)
     dlg.vbox.pack_start(l, False, False, 0)
 
@@ -1318,7 +1318,7 @@ def HumanSize(number):
 
         return r
 
-    except Exception as e:
+    except Exception as e:  # noqa: F841
         return number
 
 
@@ -1338,7 +1338,7 @@ def HumanSpeed(number):
 
         return r
 
-    except Exception as e:
+    except Exception as e:  # noqa: F841
         return number
 
 
@@ -1446,13 +1446,13 @@ def _expand_alias(aliases, cmd):
                 import subprocess
 
                 p = subprocess.Popen(arg, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=(not sys.platform.startswith("win")))
-                exit = p.wait()
+                exit = p.wait()  # noqa: F841
 
                 (stdout, stdin) = (p.stdout, p.stdin)
                 v = stdout.read().split("\n")
                 r = ""
                 for l in v:
-                    l = l.strip()
+                    l = l.strip()  # noqa: E741
                     if l:
                         r = r + l + "\n"
                 ret = ret + r.strip()

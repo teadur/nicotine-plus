@@ -94,7 +94,7 @@ class UPnPPortMapping:
 
         try:
             # First we try to import the python binding
-            import miniupnpc
+            import miniupnpc  # noqa: F401
         except ImportError as e1:
             try:
                 # We fail to import the python module: fallback to the binary.

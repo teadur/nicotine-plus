@@ -285,7 +285,7 @@ class MetaDialog(gtk.Dialog):
             _list = list(self.data.keys())
 
             if self.current not in _list:
-                ix -= 1
+                ix -= 1  # noqa: F821
             else:
                 ix = _list.index(self.current)
                 ix -= 1
@@ -310,7 +310,7 @@ class MetaDialog(gtk.Dialog):
             _list = list(self.data.keys())
 
             if self.current not in _list:
-                ix += 1
+                ix += 1  # noqa: F821
             else:
                 ix = _list.index(self.current)
                 ix += 1
@@ -690,7 +690,7 @@ class FolderDownloadDialog(gtk.Dialog):
         hbox2.show()
         box.pack_start(hbox2, False, False, 0)
 
-        cancel_button = self.add_button(gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL)
+        cancel_button = self.add_button(gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL)  # noqa: F841
         ok_button = self.add_button(gtk.STOCK_OK, gtk.ResponseType.OK)
         ok_button.grab_default()
 
@@ -786,7 +786,7 @@ class OptionDialog(gtk.Dialog):
             tray_button.remove(tray_button.get_child())
             tray_button.add(Alignment)
 
-        cancel_button = self.add_button(gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL)
+        cancel_button = self.add_button(gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL)  # noqa: F841
         ok_button = self.add_button(gtk.STOCK_OK, gtk.ResponseType.OK)
         ok_button.grab_default()
 

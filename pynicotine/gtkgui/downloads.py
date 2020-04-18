@@ -190,7 +190,7 @@ class Downloads(TransferList):
         filename = model.get_value(iter, 1)
         fullname = model.get_value(iter, 10)
         size = speed = "0"
-        length = bitrate = None
+        length = bitrate = None  # noqa: F841
         queue = immediate = num = country = bitratestr = ""
 
         for transfer in self.frame.np.transfers.downloads:
@@ -437,7 +437,7 @@ class Downloads(TransferList):
         self.widget.get_selection().selected_foreach(self.SelectedTransfersCallback)
 
         users = len(self.selected_users) > 0
-        multi_users = len(self.selected_users) > 1
+        multi_users = len(self.selected_users) > 1  # noqa: F841
         files = len(self.selected_transfers) > 0
         multi_files = len(self.selected_transfers) > 1
 

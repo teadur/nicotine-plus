@@ -781,7 +781,7 @@ class Config:
                 try:
                     # Please let it be atomic...
                     os.rename(tmpfile, realfile)
-                except Exception as inst:
+                except Exception as inst:  # noqa: F841
                     # ...ugh. Okay, how about...
                     try:
                         os.unlink(backupfile)
@@ -856,7 +856,7 @@ class Config:
                 try:
                     if os.path.exists(self.filename + ".old"):
                         os.remove(self.filename + ".old")
-                except OSError as error:
+                except OSError as error:  # noqa: F841
                     log.addwarning(_("Can't remove %s" % self.filename + ".old"))
                 try:
                     os.rename(self.filename, self.filename + ".old")

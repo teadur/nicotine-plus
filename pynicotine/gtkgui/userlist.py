@@ -287,7 +287,7 @@ class UserList:
 
     def DragUserToBuddylist(self, treeview, context, x, y, selection, info, etime):
 
-        model = treeview.get_model()
+        model = treeview.get_model()  # noqa: F841
         user = selection.data
 
         if user:
@@ -405,7 +405,7 @@ class UserList:
 
             self.popup_menu.set_user(user)
 
-            items = self.popup_menu.get_children()
+            items = self.popup_menu.get_children()  # noqa: F841
             me = (self.popup_menu.user is None or self.popup_menu.user == self.frame.np.config.sections["server"]["login"])
 
             self.Menu_BanUser.set_active(user in self.frame.np.config.sections["server"]["banlist"])
@@ -525,7 +525,7 @@ class UserList:
 
     def SaveUserList(self):
 
-        l = []
+        l = []  # noqa: E741
 
         for i in self.userlist:
             user, comment, seen, iter, flag = i

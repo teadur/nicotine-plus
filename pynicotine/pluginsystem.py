@@ -234,7 +234,7 @@ class PluginHandler(object):
         if self.frame.np.config.sections["plugins"]["enable"]:
             self.load_enabled()
         else:
-            to_enable = self.frame.np.config.sections["plugins"]["enabled"]
+            to_enable = self.frame.np.config.sections["plugins"]["enabled"]  # noqa: F841
             for plugin in self.enabled_plugins:
                 self.enabled_plugins[plugin].disable(self)
 
