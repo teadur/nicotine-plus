@@ -312,11 +312,18 @@ class SlskProtoThread(threading.Thread):
 		if listenport is not None:
 			self.start()
 		else:
-			short = _("Could not bind to a local port, aborting connection")
-			long = _("The range you specified for client connection ports was %(low)s-%(high)s, but none of these were usable. Increase and/or move the range and restart Nicotine+.") % {'low':portrange[0], 'high':portrange[1]}
-			if  portrange[0] < 1024:
-				long += "\n\n" + _("Note that part of your range lies below 1024, this is usually not allowed on most operating systems with the exception of Windows.")
-			self._ui_callback([PopupMessage(short, int)])
+			short_message = _("Could not bind to a local port, aborting connection")
+			long_message = _(
+				f"The range you specified for client connection ports was "
+				f"{portrange[0]}-{portrange[1]}, but none of these were usable. Increase and/or "
+				f"move the range and restart Nicotine+."
+			)
+			if portrange[0] < 1024:
+				long_message += "\n\n" + _(
+					"Note that part of your range lies below 1024, this is usually not allowed on"
+					" most operating systems with the exception of Windows."
+				)
+			self._ui_callback([PopupMessage(short_message, long_message)])
 
 	def _isUpload(self, conn):
 		return conn.__class__ is PeerConnection and conn.fileupl is not None
