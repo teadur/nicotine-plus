@@ -1864,7 +1864,7 @@ class FileSearchResult(PeerMessage):
                self.packObject(NetworkIntType(self.token)) +
                self.packObject(NetworkIntType(len(filelist))))
         for i in filelist:
-            msg += (chr(1) +
+            msg += (bytes(1) +
                     self.packObject(i[0]. replace(os. sep, "\\")) +
                     self.packObject(NetworkLongLongType(i[1])))
             if i[2] is None:
@@ -1879,7 +1879,7 @@ class FileSearchResult(PeerMessage):
                         self.packObject(NetworkIntType(i[3])) +
                         self.packObject(2) +
                         self.packObject(i[2][1]))
-        msg += (chr(self.freeulslots) +
+        msg += (bytes(self.freeulslots) +
                 self.packObject(NetworkIntType(self.ulspeed)) +
                 self.packObject(NetworkIntType(queuesize)))
         return zlib.compress(msg)
