@@ -1075,7 +1075,7 @@ class PopupMenu(gtk.Menu):
 
     def OnSearchUser(self, widget):
         self.frame.SearchMethod.set_active_iter(self.frame.searchmethods[_("User")])
-        self.frame.UserSearchCombo.child.set_text(self.user)
+        self.frame.UserSearchCombo.get_child().set_text(self.user)
         self.frame.ChangeMainPage(None, "search")
 
     def OnSendMessage(self, widget):
