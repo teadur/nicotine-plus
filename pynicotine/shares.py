@@ -127,7 +127,7 @@ class Shares:
             shared_db = "sharedfiles"
 
         sharedfolders = len(conf["transfers"][shared_db])
-        sharedfiles = sum([len(x) for x in list(conf["transfers"][shared_db].values())])
+        sharedfiles = sum([len(x) for x in list(conf["transfers"][shared_db])])
         self.queue.put(slskmessages.SharedFoldersFiles(sharedfolders, sharedfiles))
 
     def RebuildShares(self, msg):
